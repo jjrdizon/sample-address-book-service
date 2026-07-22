@@ -1,7 +1,7 @@
 package com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in;
 
 import com.jjrdizon.springboot.hexagonal.application.port.CreateContactUseCaseImpl;
-import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.CreateContactDto;
+import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.CreateContactRequestDto;
 import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.NameDto;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class ContactsV1ControllerTest {
         class GivenCreateContactRequest {
 
             NameDto nameDto = new NameDto().first("Juan").last("dela Cruz");
-            CreateContactDto request = new CreateContactDto().name(nameDto);
+            CreateContactRequestDto request = new CreateContactRequestDto().name(nameDto);
 
             @Test
             void thenShouldUseCreateContactUseCase() {

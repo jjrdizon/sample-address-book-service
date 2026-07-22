@@ -14,13 +14,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateContact'
+              $ref: '#/components/schemas/CreateContactRequest'
       responses:
         '201':
           description: Contact created successfully
 components:
   schemas:
-    CreateContact:
+    CreateContactRequest:
       type: object
       properties:
         name:
