@@ -1,5 +1,6 @@
 package com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in;
 
+import com.jjrdizon.springboot.hexagonal.application.usecase.CreateContactUseCase;
 import com.jjrdizon.springboot.hexagonal.domain.model.Contact;
 import com.jjrdizon.springboot.hexagonal.domain.model.ContactNumber;
 import com.jjrdizon.springboot.hexagonal.domain.model.Name;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ContactsV1Controller implements ContactsV1Api {
 
-    private final ContactRepository contactRepository;
+    private final CreateContactUseCase createContactUseCase;
 
-    public ContactsV1Controller(ContactRepository contactRepository){
-        this.contactRepository = contactRepository;
+    public ContactsV1Controller(CreateContactUseCase createContactUseCase){
+        this.createContactUseCase = createContactUseCase;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class ContactsV1Controller implements ContactsV1Api {
 
         var nameDto = createContact.getName();
         var contactNumberList = createContact.getContactNumberList().stream().map(this::mapContactNumber).toList();
-        contactRepository.save(new Contact(new Name(nameDto.getFirst(), nameDto.getLast(), nameDto.getSuffix()), contactNumberList));
+        createContactUseCase.createContact(new Contact(new Name(nameDto.getFirst(), nameDto.getLast(), nameDto.getSuffix()), contactNumberList));
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -30,6 +30,12 @@ components:
           default: []
           items:
             $ref: '#/components/schemas/ContactNumber'
+    CreateContactResponse:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
     Name:
       type: object
       properties:
