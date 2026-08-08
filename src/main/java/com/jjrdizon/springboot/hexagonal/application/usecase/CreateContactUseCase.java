@@ -4,5 +4,5 @@ import com.jjrdizon.springboot.hexagonal.domain.model.Contact;
 
 public interface CreateContactUseCase {
 
-    void createContact(Contact contact);
+    Contact createContact(Contact contact);
 }

@@ -16,8 +16,9 @@ public class ContactDomainRepositoryAdapter implements ContactRepository {
         this.mapper = mapper;
     }
 
+
     @Override
-    public void save(Contact contact) {
+    public Contact save(Contact contact) {
 
         if (isNull(contact)) {
            throw new IllegalArgumentException();
@@ -25,6 +26,8 @@ public class ContactDomainRepositoryAdapter implements ContactRepository {
 
         var entity = mapper.map(contact);
 
-        contactJpaRepository.save(entity);
+        ContactEntity saved = contactJpaRepository.save(entity);
+
+        return mapper.map(saved);
     }
 }

@@ -4,10 +4,10 @@ import com.jjrdizon.springboot.hexagonal.application.usecase.CreateContactUseCas
 import com.jjrdizon.springboot.hexagonal.domain.model.Contact;
 import com.jjrdizon.springboot.hexagonal.domain.model.ContactNumber;
 import com.jjrdizon.springboot.hexagonal.domain.model.Name;
-import com.jjrdizon.springboot.hexagonal.domain.port.ContactRepository;
 import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.api.ContactsV1Api;
 import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.ContactNumberDto;
 import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.CreateContactRequestDto;
+import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.CreateContactResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,13 +22,18 @@ public class ContactsV1Controller implements ContactsV1Api {
     }
 
     @Override
-    public ResponseEntity<Void> createContact(CreateContactRequestDto createContact) {
+    public ResponseEntity<CreateContactResponseDto> createContact(CreateContactRequestDto createContact) {
 
         var nameDto = createContact.getName();
         var contactNumberList = createContact.getContactNumberList().stream().map(this::mapContactNumber).toList();
-        createContactUseCase.createContact(new Contact(new Name(nameDto.getFirst(), nameDto.getLast(), nameDto.getSuffix()), contactNumberList));
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        var contact = createContactUseCase.createContact(new Contact(null, new Name(nameDto.getFirst(), nameDto.getLast(), nameDto.getSuffix()), contactNumberList));
+
+        CreateContactResponseDto contactResponseDto = new CreateContactResponseDto().uuid(contact.uuid());
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(contactResponseDto);
     }
 
     private ContactNumber mapContactNumber(ContactNumberDto contactNumberDto) {

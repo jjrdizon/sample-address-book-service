@@ -7,15 +7,20 @@ import com.jjrdizon.springboot.hexagonal.domain.port.ContactRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 class CreateContactUseCaseImplTest {
 
     @Nested
     class WhenCreatingNewContact {
+
+        ContactRepository mockRepository = mock(ContactRepository.class);
+
+        CreateContactUseCaseImpl testClass = new CreateContactUseCaseImpl(mockRepository);
 
         @Nested
         class GivenContact {
@@ -23,19 +28,33 @@ class CreateContactUseCaseImplTest {
             @Test
             void shouldSaveInContactRepository() {
 
-                var mockRepository = mock(ContactRepository.class);
 
-                var testClass = new CreateContactUseCaseImpl(mockRepository);
                 var testContact = new Contact(
+                        null,
                         new Name("Juan", "dela Cruz", null),
-                        List.of(
-                                new ContactNumber("+63", null, "917123456")
-                        )
+                        new ArrayList<>()
                 );
 
                 testClass.createContact(testContact);
 
                 verify(mockRepository).save(testContact);
+            }
+
+            @Test
+            void shouldReturnSavedContact() {
+
+                var savedContact = mock(Contact.class);
+                when(mockRepository.save(any())).thenReturn(savedContact);
+
+                var testContact = new Contact(
+                        null,
+                        new Name("Juan", "dela Cruz", null),
+                        new ArrayList<>()
+                );
+
+                var returnedContact = testClass.createContact(testContact);
+
+                assertThat(returnedContact).isEqualTo(savedContact);
             }
         }
     }

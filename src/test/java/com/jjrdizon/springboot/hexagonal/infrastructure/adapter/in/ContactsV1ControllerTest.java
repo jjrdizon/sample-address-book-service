@@ -1,8 +1,11 @@
 package com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in;
 
 import com.jjrdizon.springboot.hexagonal.application.port.CreateContactUseCaseImpl;
+import com.jjrdizon.springboot.hexagonal.domain.model.Contact;
 import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.CreateContactRequestDto;
+import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.CreateContactResponseDto;
 import com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto.NameDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,9 +18,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.assertArg;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ContactsV1ControllerTest {
@@ -30,6 +36,14 @@ class ContactsV1ControllerTest {
 
     @Nested
     class WhenCreatingContact {
+
+        @BeforeEach
+        public void setUp() {
+            Contact mock = mock(Contact.class);
+            when(mock.uuid()).thenReturn(UUID.randomUUID());
+
+            when(createContactUseCase.createContact(any(Contact.class))).thenReturn(mock);
+        }
 
         @Nested
         class GivenCreateContactRequest {
@@ -49,9 +63,16 @@ class ContactsV1ControllerTest {
 
             @Test
             void thenShouldReturnHttpCreated() {
-                ResponseEntity<Void> response = controller.createContact(request);
+                var response = controller.createContact(request);
 
                 assertThat(response.getStatusCode().isSameCodeAs(HttpStatus.CREATED)).isTrue();
+            }
+
+            @Test
+            void thenShouldReturnCreateContactResponse() {
+                var response = controller.createContact(request);
+
+                assertThat(response.getBody()).isNotNull();
             }
         }
     }

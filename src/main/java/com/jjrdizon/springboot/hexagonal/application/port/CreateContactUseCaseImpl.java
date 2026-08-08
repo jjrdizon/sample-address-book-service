@@ -13,7 +13,7 @@ public class CreateContactUseCaseImpl implements CreateContactUseCase {
     }
 
     @Override
-    public void createContact(Contact contact) {
-        contactRepository.save(contact);
+    public Contact createContact(Contact contact) {
+        return contactRepository.save(contact);
     }
 }

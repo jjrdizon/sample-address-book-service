@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class ContactDomainRepositoryAdapterTest {
 
@@ -28,7 +28,7 @@ class ContactDomainRepositoryAdapterTest {
         @Nested
         class GivenNonNullContact {
 
-            Contact contact = new Contact(new Name("Juan", "dela Cruz", null), new ArrayList<>());
+            Contact contact = new Contact(null, new Name("Juan", "dela Cruz", null), new ArrayList<>());
 
             @Test
             void shouldSaveToJpaRepository() {
@@ -44,6 +44,25 @@ class ContactDomainRepositoryAdapterTest {
 
                 }));
             }
+
+            @Test
+            void shouldReturnSavedEntity() {
+
+                when(repository.save(any(ContactEntity.class))).thenAnswer(invocation -> {
+                    ContactEntity argument = invocation.getArgument(0, ContactEntity.class);
+                    argument.setUuid(UUID.randomUUID());
+                    return argument;
+                });
+
+                Contact saved = adapter.save(contact);
+
+                assertThat(saved).isNotNull();
+                assertThat(saved.uuid()).isNotNull();
+                assertThat(saved.name().first()).isEqualTo(contact.name().first());
+                assertThat(saved.name().last()).isEqualTo(contact.name().last());
+                assertThat(saved.name().suffix()).isEqualTo(contact.name().suffix());
+            }
+
 
         }
 
