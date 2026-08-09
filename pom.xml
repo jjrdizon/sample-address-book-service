@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>23</java.version>
+        <openapi.spec.ref>08636a55bc0505c8ab4c8799525fd7bc72b687db</openapi.spec.ref>
     </properties>
 
     <dependencies>
@@ -132,6 +133,26 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.9.0</version>
+                <executions>
+                    <execution>
+                        <id>get-openapi-spec</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>https://raw.githubusercontent.com/jjrdizon/sample-address-book-api/${openapi.spec.ref}/openapi.yaml</url>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputFileName>openapi.yaml</outputFileName>
+                            <overwrite>true</overwrite>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>7.0.0</version> <!-- Use the latest version -->
@@ -141,10 +162,10 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <inputSpec>${project.build.directory}/openapi.yaml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <apiPackage>com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.api</apiPackage>
-                            <modelPackage>com.jjrdizon.springboot.hexagonal.infrastructure.adapter.in.dto</modelPackage>
+                            <apiPackage>com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in.api</apiPackage>
+                            <modelPackage>com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in.dto</modelPackage>
                             <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
                                 <useTags>true</useTags>

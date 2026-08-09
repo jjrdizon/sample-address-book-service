@@ -1,17 +1,4 @@
 services:
-  app:
-    build:
-      context: ../                # repo root, relative to this file's location
-      dockerfile: Dockerfile      # relative to `context`, so just "Dockerfile"
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/address-book-db
-      SPRING_JPA_GENERATEDDL: true
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: pass
-    depends_on:
-      - db
 
   db:
     image: postgres:16
@@ -24,3 +11,27 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  migrate:
+    image: flyway/flyway:10
+    command: -url=jdbc:postgresql://db:5432/address-book-db -user=user -password=pass -connectRetries=10 migrate
+    volumes:
+      - ../db/migration:/flyway/sql:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    build:
+      context: ../                # repo root, relative to this file's location
+      dockerfile: Dockerfile      # relative to `context`, so just "Dockerfile"
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/address-book-db
+      SPRING_JPA_GENERATEDDL: true
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
