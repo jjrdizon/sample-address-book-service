@@ -1,6 +1,6 @@
 apiVersion: v2
-name: sample-address-book
-description: Helm chart for the jjrdizon's sample-address-book application
+name: sample-address-book-service
+description: Helm chart for the jjrdizon's sample-address-book-service application
 type: application
 version: 0.1.0
 appVersion: "1.0.0"

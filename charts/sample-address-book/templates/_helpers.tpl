@@ -1,14 +1,14 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "sample-address-book.name" -}}
+{{- define "sample-address-book-service.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Create a default fully qualified app name.
 */}}
-{{- define "sample-address-book.fullname" -}}
+{{- define "sample-address-book-service.fullname" -}}
 {{- if .Values.fullNameOverride }}
 {{- .Values.fullNameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -23,16 +23,16 @@ Create a default fully qualified app name.
 {{/*
 Selector labels
 */}}
-{{- define "sample-address-book.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "sample-address-book.name" . }}
+{{- define "sample-address-book-service.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "sample-address-book-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "sample-address-book.labels" -}}
-{{ include "sample-address-book.selectorLabels" . }}
+{{- define "sample-address-book-service.labels" -}}
+{{ include "sample-address-book-service.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.jjrdizon</groupId>
-    <artifactId>sample-address-book</artifactId>
+    <artifactId>sample-address-book-service</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

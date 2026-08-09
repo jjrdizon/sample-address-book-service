@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "sample-address-book.fullname" . }}
+  name: {{ include "sample-address-book-service.fullname" . }}
   labels:
-    {{- include "sample-address-book.labels" . | nindent 4 }}
+    {{- include "sample-address-book-service.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "sample-address-book.selectorLabels" . | nindent 6 }}
+      {{- include "sample-address-book-service.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "sample-address-book.selectorLabels" . | nindent 8 }}
+        {{- include "sample-address-book-service.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
