@@ -9,9 +9,9 @@ public class ContactDomainRepositoryAdapter implements ContactRepository {
 
     private final ContactJpaRepository contactJpaRepository;
 
-    private final ContactDomainMapper mapper;
+    private final ContactEntityMapper mapper;
 
-    public ContactDomainRepositoryAdapter(ContactJpaRepository contactJpaRepository, ContactDomainMapper mapper) {
+    public ContactDomainRepositoryAdapter(ContactJpaRepository contactJpaRepository, ContactEntityMapper mapper) {
         this.contactJpaRepository = contactJpaRepository;
         this.mapper = mapper;
     }

@@ -18,7 +18,7 @@ class ContactDomainRepositoryAdapterTest {
 
     ContactJpaRepository repository = mock(ContactJpaRepository.class);
 
-    ContactDomainMapper mapper = Mappers.getMapper(ContactDomainMapper.class);
+    ContactEntityMapper mapper = Mappers.getMapper(ContactEntityMapper.class);
 
     ContactDomainRepositoryAdapter adapter = new ContactDomainRepositoryAdapter(repository, mapper);
 

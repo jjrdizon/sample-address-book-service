@@ -17,7 +17,7 @@
 
     <properties>
         <java.version>23</java.version>
-        <openapi.spec.ref>08636a55bc0505c8ab4c8799525fd7bc72b687db</openapi.spec.ref>
+        <openapi.spec.ref>main</openapi.spec.ref>
     </properties>
 
     <dependencies>

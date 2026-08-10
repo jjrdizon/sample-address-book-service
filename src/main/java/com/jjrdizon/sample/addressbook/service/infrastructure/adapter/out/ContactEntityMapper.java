@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueMappingStrategy;
 
 @Mapper(componentModel = "spring", nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public interface ContactDomainMapper {
+public interface ContactEntityMapper {
 
     @Mapping(target = "firstName", source = "contact.name.first")
     @Mapping(target = "lastName", source = "contact.name.last")
