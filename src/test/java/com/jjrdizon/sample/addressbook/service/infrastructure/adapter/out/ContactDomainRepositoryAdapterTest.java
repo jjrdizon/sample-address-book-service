@@ -2,11 +2,18 @@ package com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out;
 
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
 import com.jjrdizon.sample.addressbook.service.domain.model.Name;
+import org.checkerframework.checker.units.qual.N;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,13 +21,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ContactDomainRepositoryAdapterTest {
 
-    ContactJpaRepository repository = mock(ContactJpaRepository.class);
+    @Mock
+    ContactJpaRepository repository;
 
+    @Spy
     ContactEntityMapper mapper = Mappers.getMapper(ContactEntityMapper.class);
 
-    ContactDomainRepositoryAdapter adapter = new ContactDomainRepositoryAdapter(repository, mapper);
+    @InjectMocks
+    ContactDomainRepositoryAdapter adapter;
 
     @Nested
     class WhenSavingContact {
@@ -79,4 +90,34 @@ class ContactDomainRepositoryAdapterTest {
 
     }
 
+    @Nested
+    class WhenFindingAllContact {
+
+        @Test
+        void shouldReturnAllContacts() {
+
+            var contactEntities = List.of(
+                    new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Sr."),
+                    new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Jr.")
+            );
+
+            when(repository.findAll()).thenReturn(contactEntities);
+
+            var contacts = adapter.findAll();
+
+            assertThat(contacts)
+                    .isNotEmpty()
+                    .hasSize(contactEntities.size());
+
+            contacts.forEach(contact -> {
+                assertThat(contact.name().first()).isEqualTo("Juan");
+                assertThat(contact.name().last()).isEqualTo("dela Cruz");
+            });
+
+            assertThat(contacts.stream().anyMatch(contact -> contact.name().suffix().equals("Sr."))).isTrue();
+            assertThat(contacts.stream().anyMatch(contact -> contact.name().suffix().equals("Jr."))).isTrue();
+
+
+        }
+    }
 }

@@ -1,24 +1,31 @@
-package com.jjrdizon.sample.addressbook.service.application.port;
+package com.jjrdizon.sample.addressbook.service.application.usecase;
 
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
 import com.jjrdizon.sample.addressbook.service.domain.model.Name;
 import com.jjrdizon.sample.addressbook.service.domain.port.ContactRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class CreateContactUseCaseImplTest {
+
+    @Mock
+    ContactRepository mockRepository;
+
+    @InjectMocks
+    CreateContactUseCaseImpl testClass;
 
     @Nested
     class WhenCreatingNewContact {
-
-        ContactRepository mockRepository = mock(ContactRepository.class);
-
-        CreateContactUseCaseImpl testClass = new CreateContactUseCaseImpl(mockRepository);
 
         @Nested
         class GivenContact {

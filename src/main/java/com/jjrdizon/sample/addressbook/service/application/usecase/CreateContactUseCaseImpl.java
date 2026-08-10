@@ -1,6 +1,6 @@
-package com.jjrdizon.sample.addressbook.service.application.port;
+package com.jjrdizon.sample.addressbook.service.application.usecase;
 
-import com.jjrdizon.sample.addressbook.service.application.usecase.CreateContactUseCase;
+import com.jjrdizon.sample.addressbook.service.application.port.CreateContactUseCase;
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
 import com.jjrdizon.sample.addressbook.service.domain.port.ContactRepository;
 

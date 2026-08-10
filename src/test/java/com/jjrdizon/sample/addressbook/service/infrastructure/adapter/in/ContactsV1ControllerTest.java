@@ -1,6 +1,6 @@
 package com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in;
 
-import com.jjrdizon.sample.addressbook.service.application.port.CreateContactUseCaseImpl;
+import com.jjrdizon.sample.addressbook.service.application.usecase.CreateContactUseCaseImpl;
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
 import com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in.dto.CreateContactRequestDto;
 import com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in.dto.NameDto;

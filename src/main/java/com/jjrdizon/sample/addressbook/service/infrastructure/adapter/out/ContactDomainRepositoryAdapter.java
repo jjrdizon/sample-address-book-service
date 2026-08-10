@@ -3,6 +3,8 @@ package com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out;
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
 import com.jjrdizon.sample.addressbook.service.domain.port.ContactRepository;
 
+import java.util.List;
+
 import static java.util.Objects.isNull;
 
 public class ContactDomainRepositoryAdapter implements ContactRepository {
@@ -29,5 +31,12 @@ public class ContactDomainRepositoryAdapter implements ContactRepository {
         ContactEntity saved = contactJpaRepository.save(entity);
 
         return mapper.map(saved);
+    }
+
+    @Override
+    public List<Contact> findAll() {
+        var all = contactJpaRepository.findAll();
+
+        return all.stream().map(mapper::map).toList();
     }
 }

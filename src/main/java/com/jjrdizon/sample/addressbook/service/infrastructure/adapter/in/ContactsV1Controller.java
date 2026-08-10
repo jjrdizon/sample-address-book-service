@@ -1,7 +1,7 @@
 package com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in;
 
-import com.jjrdizon.sample.addressbook.service.application.usecase.CreateContactUseCase;
-import com.jjrdizon.sample.addressbook.service.application.usecase.GetContactsUseCase;
+import com.jjrdizon.sample.addressbook.service.application.port.CreateContactUseCase;
+import com.jjrdizon.sample.addressbook.service.application.port.GetContactsUseCase;
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
 import com.jjrdizon.sample.addressbook.service.domain.model.ContactNumber;
 import com.jjrdizon.sample.addressbook.service.domain.model.Name;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 public class ContactsV1Controller implements ContactsV1Api {
