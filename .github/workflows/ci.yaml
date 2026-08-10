@@ -32,4 +32,4 @@ jobs:
         if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw -B sonar:sonar
+        run: ./mvnw -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
