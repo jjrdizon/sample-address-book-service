@@ -25,9 +25,6 @@ class CreateContactV1FlowIT {
     private RestTemplate restTemplate;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private ContactJpaRepository jpaRepository;
 
     @BeforeEach

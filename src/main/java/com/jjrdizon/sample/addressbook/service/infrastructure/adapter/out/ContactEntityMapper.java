@@ -15,7 +15,6 @@ public interface ContactEntityMapper {
     ContactEntity map(Contact contact);
 
     @InheritInverseConfiguration
-    @Mapping(target = "contactNumberList", ignore = true)
     Contact map(ContactEntity entity);
 
 }
