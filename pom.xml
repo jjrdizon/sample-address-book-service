@@ -17,7 +17,8 @@
 
     <properties>
         <java.version>23</java.version>
-        <openapi.spec.ref>main</openapi.spec.ref>
+
+        <openapi.spec.ref>0200cb31fbd72b48c92d8d5b69835cfb221ceebf</openapi.spec.ref>
 
         <sonar.projectKey>jjrdizon_sample-address-book-service</sonar.projectKey>
         <sonar.organization>jjrdizon</sonar.organization>
@@ -30,6 +31,7 @@
             **/generated-sources/**,
             **/*Dto.java,
             **/*DtoMapperImpl.java,
+            **/*Entity.java,
             **/*Api.java,
             **/ApiUtil.java
         </sonar.coverage.exclusions>

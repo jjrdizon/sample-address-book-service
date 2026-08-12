@@ -1,10 +1,9 @@
 package com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out;
 
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
-import org.mapstruct.InheritInverseConfiguration;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.NullValueMappingStrategy;
+import com.jjrdizon.sample.addressbook.service.domain.model.ContactNumber;
+import com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in.dto.ContactNumberDto;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", nullValueIterableMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface ContactEntityMapper {
@@ -14,8 +13,17 @@ public interface ContactEntityMapper {
     @Mapping(target = "suffix", source = "contact.name.suffix")
     ContactEntity map(Contact contact);
 
+    @AfterMapping
+    default void populateParentContact(@MappingTarget ContactEntity mappedEntity) {
+        mappedEntity.getContactNumbers().stream().forEach(contactNumber -> { contactNumber.setParentContact(mappedEntity); });
+    }
+
     @InheritInverseConfiguration
-    @Mapping(target = "contactNumberList", ignore = true)
     Contact map(ContactEntity entity);
+
+    @Mapping(target = "parentContact", ignore = true)
+    ContactNumberEntity map(ContactNumber contactNumber);
+
+
 
 }
