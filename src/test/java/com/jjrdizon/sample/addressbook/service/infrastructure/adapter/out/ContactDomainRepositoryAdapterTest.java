@@ -1,6 +1,7 @@
 package com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out;
 
 import com.jjrdizon.sample.addressbook.service.domain.model.Contact;
+import com.jjrdizon.sample.addressbook.service.domain.model.ContactNumber;
 import com.jjrdizon.sample.addressbook.service.domain.model.Name;
 import org.checkerframework.checker.units.qual.N;
 import org.junit.jupiter.api.Nested;
@@ -96,10 +97,13 @@ class ContactDomainRepositoryAdapterTest {
         @Test
         void shouldReturnAllContacts() {
 
-            var contactEntities = List.of(
-                    new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Sr."),
-                    new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Jr.")
-            );
+            var contact1 = new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Sr.", new ArrayList<>());
+            var contact2 = new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Jr.", new ArrayList<>());
+
+            contact1.addContactNumberEntity( new ContactNumberEntity(UUID.randomUUID(), null, "+63", "917", "123456", "mobile"));
+            contact2.addContactNumberEntity( new ContactNumberEntity(UUID.randomUUID(), null, "+63", "917", "123456", "mobile"));
+
+            var contactEntities = List.of(contact1, contact2);
 
             when(repository.findAll()).thenReturn(contactEntities);
 
@@ -112,6 +116,15 @@ class ContactDomainRepositoryAdapterTest {
             contacts.forEach(contact -> {
                 assertThat(contact.name().first()).isEqualTo("Juan");
                 assertThat(contact.name().last()).isEqualTo("dela Cruz");
+
+                var contactNumbers = contact.contactNumbers();
+                assertThat(contactNumbers).hasSize(1);
+
+                var contactNumber = contactNumbers.getFirst();
+                assertThat(contactNumber.countryCode()).isEqualTo("+63");
+                assertThat(contactNumber.areaCode()).isEqualTo("917");
+                assertThat(contactNumber.subscriberNumber()).isEqualTo("123456");
+                assertThat(contactNumber.label()).isEqualTo("mobile");
             });
 
             assertThat(contacts.stream().anyMatch(contact -> contact.name().suffix().equals("Sr."))).isTrue();

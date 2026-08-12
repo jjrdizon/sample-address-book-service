@@ -36,7 +36,7 @@ public class ContactsV1Controller implements ContactsV1Api {
 
         var createdContact = createContactUseCase.createContact(contactToCreate);
 
-        CreateContactResponseDto contactResponseDto = new CreateContactResponseDto().uuid(createdContact.uuid());
+        var contactResponseDto = contactDtoMapper.mapToCreateContactResponseDto(createdContact);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

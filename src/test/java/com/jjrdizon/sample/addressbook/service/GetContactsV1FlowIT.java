@@ -3,6 +3,8 @@ package com.jjrdizon.sample.addressbook.service;
 import com.jjrdizon.sample.addressbook.service.infrastructure.adapter.in.dto.ContactDto;
 import com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out.ContactEntity;
 import com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out.ContactJpaRepository;
+import com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out.ContactNumberEntity;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,12 +35,20 @@ class GetContactsV1FlowIT {
         restTemplate = new RestTemplate();
         jpaRepository.deleteAll();
 
-        var contactEntities = List.of(
-                new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Sr."),
-                new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Jr.")
-        );
+        var contact1 = new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Sr.", new ArrayList<>());
+        var contact2 = new ContactEntity(UUID.randomUUID(), "Juan", "dela Cruz", "Jr.", new ArrayList<>());
 
-        jpaRepository.saveAll(contactEntities);
+        contact1.addContactNumberEntity( new ContactNumberEntity(UUID.randomUUID(), null, "+63", "917", "123456", "mobile"));
+        contact2.addContactNumberEntity( new ContactNumberEntity(UUID.randomUUID(), null, "+63", "917", "123456", "mobile"));
+
+        var contactEntities = List.of(contact1, contact2);
+
+        jpaRepository.saveAllAndFlush(contactEntities);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        jpaRepository.deleteAll();
     }
 
     @Test
@@ -51,12 +61,10 @@ class GetContactsV1FlowIT {
         var contactDtos = response.getBody();
 
         assertThat(contactDtos)
-                .isNotEmpty()
                 .hasSize(2);
 
         contactDtos.forEach(contact -> {
-            assertThat(contact.getName().getFirst()).isEqualTo("Juan");
-            assertThat(contact.getName().getLast()).isEqualTo("dela Cruz");
+            assertThat(contact.getContactNumbers().stream().allMatch(contactNumberDto -> contactNumberDto.getSubscriberNumber().equals("123456"))).isTrue();
         });
 
         assertThat(contactDtos.stream().anyMatch(contact -> contact.getName().getSuffix().equals("Sr."))).isTrue();

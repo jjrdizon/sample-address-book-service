@@ -6,7 +6,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class AddressBookServiceApplicationTest {
+public class AddressBookServiceApplicationIT {
 
     @Test
     void contextLoads() {

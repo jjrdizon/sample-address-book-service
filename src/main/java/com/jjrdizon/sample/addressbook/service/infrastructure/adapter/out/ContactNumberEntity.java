@@ -1,9 +1,6 @@
 package com.jjrdizon.sample.addressbook.service.infrastructure.adapter.out;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,16 +8,18 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@Entity(name = "contacts")
+@Entity(name = "contact_numbers")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ContactNumberEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    private UUID contactUuid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contactUuid")
+    private ContactEntity parentContact;
 
     private String countryCode;
 

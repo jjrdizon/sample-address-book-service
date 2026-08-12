@@ -25,8 +25,19 @@ public class ContactEntity {
 
     private String suffix;
 
-    @OneToMany
-    @JoinColumn(name = "contact_uuid")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "contactUuid")
     private List<ContactNumberEntity> contactNumbers = new ArrayList<>();
+
+    public void addContactNumberEntity(ContactNumberEntity contactNumberEntity) {
+        if(contactNumberEntity == null) return;
+
+        if(contactNumbers == null) {
+            contactNumbers = new ArrayList<>();
+        }
+
+        contactNumberEntity.setParentContact(this);
+        contactNumbers.add(contactNumberEntity);
+    }
 
 }

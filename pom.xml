@@ -18,7 +18,7 @@
     <properties>
         <java.version>23</java.version>
 
-        <openapi.spec.ref>0f972c43525c77986220613e4389158b8a090f8d</openapi.spec.ref>
+        <openapi.spec.ref>0200cb31fbd72b48c92d8d5b69835cfb221ceebf</openapi.spec.ref>
 
         <sonar.projectKey>jjrdizon_sample-address-book-service</sonar.projectKey>
         <sonar.organization>jjrdizon</sonar.organization>
